@@ -97,7 +97,7 @@
   * 之后再利用上面申请到的 secret 利用 sha256 来计算这个拼接后字符串的摘要信息
   * 键值对如下
   <pre>
-    uri: 请求的url去掉 root 的部分，例如 /users/uniq::bonny/status/exited
+    uri: 请求的url去掉 root 的部分，例如: /users/100000/orders
     key: 申请到的key,
     timestamp: 时间戳, int32 秒级
     signMethod: "HmacSHA256" 固定
