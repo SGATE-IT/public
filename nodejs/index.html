@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>Sgate.sa Payment case & sample</title>
+<style>
+#root {
+}
+
+#root .loading,
+#root .error,
+#root .success {
+  display: none;
+}
+
+#root.success .success,
+#root.loading .loading,
+#root.error .error {
+  display: block;
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="loading" id="loading">loading...</div>
+  <div class="error" id="error">Error info</div>
+  <div class="success" id="success">Success Info</div>
+  <div id="order">
+    <div>
+      <label>Comment: <input id="name" type="string" value="Order description " /></label>
+    </div>
+    <div>
+      <label>Currency: <select id="currency"><option value="SAR">SAR</option></select></label>
+    </div>
+    <div>
+      <label>Amount: <input id="amount" type="number" value="10" min="1" max="99999999999" /></label>
+    </div>
+    <button id="paymentBtn">Payment</button>
+  </div>
+</div>
+<!-- MAIN_SCRIPT -->
+</body>
+</html>
