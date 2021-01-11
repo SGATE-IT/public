@@ -1,9 +1,11 @@
 # 支付对接文档
 
 ## 重要的事情重复三遍之一
-<pre>本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100</pre>
-<pre>本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100</pre>
-<pre>本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100</pre>
+<pre>
+本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100
+本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100
+本支付网关订单金额需要放到100倍，这么做是为了避免浮点数计算，比如收款1美元，需要传递 amount = 100
+</pre>
 
 
 <pre>名词解释</pre>
@@ -11,14 +13,27 @@
 * `对接商户` 提供商品或者服务给`消费者`, 消费者支付的时候需要引导到`支付网关`的对应支付地址
 * `消费者` 在`对接商户`页面购买商品或者服务，到`支付网关`完成支付操作
 
+## 支付接口相关
 <pre>支付网关api根路径</pre>
 * https://club.sgate.sa/api_v1
 
+
 <pre>支付网关提供的接口</pre>
 * `接口1` [POST] /users/:userId/orders 对接商户创建订单
-* `接口2` [GET] /orders/:orderId 对接商户，查看订单详情接口
+  * 接口请求参数 body schema 定义, 参考 附录2
+  * 接口返回创建有的订单详情，参考 附录1
 
-<pre>支付网关提供的页面</pre>
+* `接口2` [GET] /orders/:orderId 对接商户，查看订单详情接口
+  * 接口参数，仅需要 orderId 支付网关订单id，创建订单返回的 `id` 值
+  * 接口返回创建有的订单详情，参考 附录1
+
+## 订单状态种类
+* `active` 订单已激活, 等待支付状态
+* `paid` 订单已支付, 对接商家基于该状态来让自己的订单进入已付款，待发货状态
+* `error` 订单失败，具体信息查看订单详情的 message 信息
+
+
+## 支付网关提供的页面
 * https://club.sgate.sa/ 支付页面
   * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
   * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
@@ -38,12 +53,14 @@
   * 切莫收到一次通知发一次货
 
 ## 重要的事情重复三遍之二
-<pre>切莫收到一次通知发一次货</pre>
-<pre>切莫收到一次通知发一次货</pre>
-<pre>切莫收到一次通知发一次货</pre>
+<pre>
+切莫收到一次通知发一次货
+切莫收到一次通知发一次货
+切莫收到一次通知发一次货
+</pre>
 
 # 对接流程，结合下图，仔细看我的文档，注意图中标注的箭头序号
-![对接主流程]('./支付对接主要流程.png')
+![对接主流程](./支付对接主要流程.png)
 * 消费者在对接商家网站上下达购买订单，对应 `箭头1`
 * 对接商家在接到消费者下单请求，也就是 `箭头1` 的请求，现在创建自己的订单，之后调用支付网关的 `接口1`(创建支付订单), 对应 `箭头2`
 * 对接商家构造具体的支付页面，引导用户浏览器到支付页面, 对接 `箭头3`
@@ -59,9 +76,11 @@
 * `secret` string 商家对接私钥, 对接私钥 `secret` 切莫公开，注意别泄漏，推荐系统内 AES 加密存储，需要的时候解密
 
 ## 重要的事情重复三遍之三
-<pre>对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储</pre>
-<pre>对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储</pre>
-<pre>对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储</pre>
+<pre>
+对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储
+对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储
+对接私钥 `secret` 切莫公开，注意保护，别泄漏, 推荐 AES 加密存储
+</pre>
 
 <pre>对接商户在请求支付网关接口的时候全部采用签名验证的方式</pre>
 ## 签名认证方式
@@ -86,9 +105,115 @@
     method: 'user.exit' 不同接口这个值不一样，用户离职对应的是 user.exit
   </pre>
 
+## 附录1
+* 订单详情 schema 定义
+<pre>
+{
+  "description": "创建订单接口返回信息",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "支付网关订单ID, 查询订单详情，跳转支付地址均需要改ID",
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 40,
+    },
+    "name": {
+      "description": "订单备注信息，方便管理人员核对信息, 来源于订单创建的 name 参数",
+      "type": "string",
+    },
+    "userId": {
+      "description": "对接商户的ID, 来源于订单创建路径里的 :userId",
+      "type": "integer",
+    },
+    "userOrderId": {
+      "description": "对接商户订单ID, 来源于订单创建参数里的 userOrderId",
+      "type": "integer",
+    },
+    "currency": {
+      "description": "支付货币种类，来源于订单创建参数里的 currency",
+      "type": "string",
+    },
+    "amount": {
+      "description": "支付货币金额，来源于订单创建参数里的 amount",
+      "type": "integer",
+    },
+    "status": {
+      "description": "订单状态，新创建的订单为 `active`,
+      "type": "string",
+    },
+    "ticket": {
+      "description": "支付票据，随机生成64位随机字符创，用来保障非登录访客支付的安全，以及订单的安全",
+      "type": "string",
+    },
+    "paidAt": {
+      "description": "订单完成支付的时间",
+      "type": "string",
+      "format": "date-time",
+    },
+    "gate": {
+      "description": "支付网关选择",
+      "type": "string",
+      "enum": ["mastercard"],
+    },
+    "notificationURL": {
+      "description": "订单通知接口地址, 来源于订单创建时的 notificationURL 参数",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}
+</pre>
 
-
-
-
-
+## 附录2
+* 创建订单接口请求 参数
+<pre>
+{
+	"description": "对接商户创建支付订单",
+	"type": "object",
+	"required": ["name", "userId", "clientId", "userOrderId", "gate", "currency", "amount"],
+	"additionalProperties": false,
+	"properties": {
+		"clientId": {
+			"description": "所属 clientId",
+			"type": "integer"
+		},
+		"userId": {
+			"description": "所属用户 ID",
+			"type": "integer"
+		},
+		"name": {
+			"description": "备注信息",
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 120
+		},
+		"gate": {
+			"description": "支付网关选择",
+			"type": "string",
+			"enum": ["mastercard"]
+		},
+		"userOrderId": {
+			"description": "商户系统订单ID，商户要保证该值唯一性",
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 60
+		},
+		"currency": {
+			"description": "订单金额币种",
+			"type": "string",
+			"enum": ["SAR"]
+		},
+		"amount": {
+			"description": "订单金额，为避免浮点数运算问题，统一放大100倍, 取整",
+			"type": "integer"
+		},
+		"notificationURL": {
+			"description": "订单状态变更回调地址",
+			"type": "string",
+			"format": "url"
+		}
+	}
+}
+</pre>
 
