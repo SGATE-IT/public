@@ -28,13 +28,19 @@ function Actions(cnf, deps) {
     return [order, target];
   };
 
+  let doing = false;
   /** 默认动作，也就是开始订单的动作 */
   const Default = async () => {
     $btn.addEventListener("click", async () => {
+      // 避免重复点击
+      if (doing) return;
+      doing = true;
       try {
         const [order, target] = await addOrder();
+        doing = false;
         utils.showSuccess(`创建订单成功: ${order.id}`, target);
       } catch (e) {
+        doing = false;
         utils.showError(e);
       }
     });
