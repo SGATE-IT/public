@@ -102,7 +102,7 @@
     timestamp: 时间戳, int32 秒级
     signMethod: "HmacSHA256" 固定
     signVersion: "1" 固定
-    method: 'user.exit' 不同接口这个值不一样，用户离职对应的是 user.exit
+    method: 'user.addOrder' 不同接口这个值不一样，创建订单: user.addOrder, 订单详情: order.detail
   </pre>
 
 ## 附录1
