@@ -38,7 +38,7 @@
   * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
   * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
   * 参数 `method` 选填, 页面方式 可选 `lightbox` or `paymentPage` 分别代表轻量级本页支付弹层以及全新页面支付
-  * 参数 `return` 选填，支付成功后返回页面url, 不传则取 referrer, 返回页面会额外携带三个参数 orderId, ticket, action 此时 action=complete
+  * 参数 `return` 选填，支付成功后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action 此时 action=complete
   * 参数 `error` 选填，支付发生错误后返回页面url, 不传则取 return, 返回页面会额外携带三个参数 orderId, ticket, action, 此时 action=error
   * 参数 `cancel` 选填，支付取消后返回页面url, 不传则取 return, 返回页面会额外携带三个参数 orderId, ticket, action, 此时 action=cancel
 
