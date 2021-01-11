@@ -169,51 +169,51 @@
 * 创建订单接口请求 参数
 <pre>
 {
-	"description": "对接商户创建支付订单",
-	"type": "object",
-	"required": ["name", "userId", "clientId", "userOrderId", "gate", "currency", "amount"],
-	"additionalProperties": false,
-	"properties": {
-		"clientId": {
-			"description": "所属 clientId",
-			"type": "integer"
-		},
-		"userId": {
-			"description": "所属用户 ID",
-			"type": "integer"
-		},
-		"name": {
-			"description": "备注信息",
-			"type": "string",
-			"minLength": 1,
-			"maxLength": 120
-		},
-		"gate": {
-			"description": "支付网关选择",
-			"type": "string",
-			"enum": ["mastercard"]
-		},
-		"userOrderId": {
-			"description": "商户系统订单ID，商户要保证该值唯一性",
-			"type": "string",
-			"minLength": 1,
-			"maxLength": 60
-		},
-		"currency": {
-			"description": "订单金额币种",
-			"type": "string",
-			"enum": ["SAR"]
-		},
-		"amount": {
-			"description": "订单金额，为避免浮点数运算问题，统一放大100倍, 取整",
-			"type": "integer"
-		},
-		"notificationURL": {
-			"description": "订单状态变更回调地址",
-			"type": "string",
-			"format": "url"
-		}
-	}
+  "description": "对接商户创建支付订单",
+  "type": "object",
+  "required": ["name", "userId", "clientId", "userOrderId", "gate", "currency", "amount"],
+  "additionalProperties": false,
+  "properties": {
+    "clientId": {
+      "description": "所属 clientId",
+      "type": "integer"
+    },
+    "userId": {
+      "description": "所属用户 ID",
+      "type": "integer"
+    },
+    "name": {
+      "description": "备注信息",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "gate": {
+      "description": "支付网关选择",
+      "type": "string",
+      "enum": ["mastercard"]
+    },
+    "userOrderId": {
+      "description": "商户系统订单ID，商户要保证该值唯一性",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "currency": {
+      "description": "订单金额币种",
+      "type": "string",
+      "enum": ["SAR"]
+    },
+    "amount": {
+      "description": "订单金额，为避免浮点数运算问题，统一放大100倍, 取整",
+      "type": "integer"
+    },
+    "notificationURL": {
+      "description": "订单状态变更回调地址",
+      "type": "string",
+      "format": "url"
+    }
+  }
 }
 </pre>
 
