@@ -114,14 +114,10 @@ function Utils(cnf, { location, $root, $error, $success }) {
   };
 
   // 显示错误信息
-  const showError = (e, url) => {
-    if (mode === "debugger") console.log("showError: %o, %s", e, url);
-    if (url) {
-      location.href = url;
-    } else {
-      $root.setAttribute("class", "error");
-      $error.innerHTML = `Error info: ${e.message || "unknown"}`;
-    }
+  const showError = e => {
+    if (mode === "debugger") console.log("showError: %o", e);
+    $root.setAttribute("class", "error");
+    $error.innerHTML = `Error info: ${e.message || "unknown"}`;
   };
 
   // 显示成功信息

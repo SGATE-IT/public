@@ -48,12 +48,12 @@ function Actions(cnf, deps) {
 
   /** 订单支付失败 */
   const error = async ({ orderId, ticket, ...params }) => {
-    utils.showError(Error(JSON.stringify(params)), localStorage.errorURL);
+    utils.showError(Error(`Payment error: ${JSON.stringify(params)}`));
   };
 
   /** 订单支付取消 */
   const cancel = async () => {
-    utils.showError(Error("Payment cancel"), localStorage.cancelURL);
+    utils.showError(Error("Payment cancel"));
   };
 
   return { Default, complete, error, cancel };
