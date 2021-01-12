@@ -89,10 +89,10 @@ server.get("/orders", (req, res, next) => {
 
 // 这个接口是站点自己提醒自己去验证订单状态，站点需要自行判断用户登录状态
 // 比如游客随意访问该接口, 导致的安全的问题
-server.put("/orders/:orderId/remind", async (req, res) => {
-  const { orderId } = req.params;
+server.put("/orders/:gateOrderId/remind", async (req, res) => {
+  const { gateOrderId } = req.params;
 
-  const order = orderDict[orderId];
+  const order = orders.find(x => x.gateOrderId === gateOrderId);
   if (order) {
     const { status } = await sdk.detail(order.gateOrderId);
     if (status === "paid") {
