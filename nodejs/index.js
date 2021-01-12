@@ -111,12 +111,12 @@ server.get("/orders/:orderId/notification", async (req, res) => {
   const { orderId } = req.params;
 
   const opt = {
-    uri: `${cnf.api}${req.url}`,
+    uri: `/sample/api_v1${req.url}`,
     key: req.header("x-auth-key"),
     timestamp: req.header("x-auth-timestamp") | 0,
     signMethod: req.header("x-auth-sign-method"),
     signVersion: req.header("x-auth-sign-version"),
-    method: req.header("x-auth-method")
+    method: "order.notification"
   };
 
   const signature = req.header("x-auth-signature");

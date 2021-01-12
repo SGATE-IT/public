@@ -59,6 +59,8 @@ function SDK({ root, userId, clientId, key, secret }, { _, axios }) {
   /** 验证签名是否合法 */
   const verify = (opt, signature) => {
     if (opt.key !== key) return false;
+    // 时间差异必须要小于100秒
+    if (100 < Math.abs((opt.timestamp - Date.now() / 1000) | 0)) return false;
     return generator(opt) === signature;
   };
 
