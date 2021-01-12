@@ -68,9 +68,7 @@ function Utils(cnf, { location, $root, $error, $success }) {
     const root = `${location.origin}${paths.join("/")}`;
 
     return {
-      complete: `${root}/complete?${qs}`,
-      error: `${root}/error?${qs}`,
-      cancel: `${root}/cancel?${qs}`
+      returnURL: `${root}/?${qs}`
     };
   };
 

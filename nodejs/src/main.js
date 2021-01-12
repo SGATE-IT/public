@@ -1,10 +1,11 @@
-const { utils, payment, actions } = require("./deps");
+const { utils, actions } = require("./deps");
 
 (async () => {
-  const file = utils.getLocationFile();
+  const { location } = window;
   try {
     const params = utils.params(location.search.slice(1));
-    await (actions[file] || actions.Default)(params);
+    const { action } = params;
+    await (actions[action] || actions.Default)(params);
   } catch (e) {
     utils.showError(e);
   }
