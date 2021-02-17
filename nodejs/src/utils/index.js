@@ -104,6 +104,26 @@ function Utils(cnf, { location, $root, $error, $success }) {
     return res.json();
   };
 
+  // STCPay 订单确认支付
+  const stcPayOrderConfirm = async (order, value) => {
+    const res = await fetch(
+      `${API_ROOT}/orders/${order.gateOrderId}/stcpay/status/paid`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          value
+        })
+      }
+    );
+
+    if (res.status !== 200) throw await res.json();
+
+    return res.json();
+  };
+
   // 获取订单详情
   const orders = async () => {
     const res = await fetch(`${API_ROOT}/orders`);
@@ -139,6 +159,7 @@ function Utils(cnf, { location, $root, $error, $success }) {
     addOrder,
     orders,
     orderRemind,
+    stcPayOrderConfirm,
     showError,
     showSuccess,
     getLocationFile

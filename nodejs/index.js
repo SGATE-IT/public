@@ -106,6 +106,28 @@ server.put("/orders/:gateOrderId/remind", async (req, res) => {
   }
 });
 
+// STCPay 支付确认
+server.put("/orders/:gateOrderId/stcpay/status/paid", async (req, res) => {
+  const { gateOrderId, value } = req.params;
+
+  const order = orders.find(x => x.gateOrderId === gateOrderId);
+  if (order) {
+    const { status } = await sdk.stcPayConfirm(
+      order.gateOrderId,
+      order.gateTicket,
+      value
+    );
+    if (status === "paid") {
+      order.status = "paid";
+      order.updatedAt = Date.now();
+      updateOrders();
+    }
+    res.send(order);
+  } else {
+    res.send(404);
+  }
+});
+
 // 这个接口是留给支付平台回调通知的，非登录用户，因此一定要验证签名是否合法
 server.get("/orders/:orderId/notification", async (req, res) => {
   const { orderId } = req.params;
@@ -160,13 +182,10 @@ server.post("/orders", async (req, res) => {
     order.gateTicket = ticket;
     order.status = "active";
 
-    console.log("9999");
     orders.push(order);
     orderDict[order.id] = order;
     updateOrders();
-    console.log("aaaa");
     res.send(201, order);
-    console.log("bbbb");
   }
 });
 

@@ -52,11 +52,24 @@ function Actions(cnf, deps) {
         const [order, target] = await addOrder();
         doing = false;
         utils.showSuccess(`创建订单成功: ${order.id}`, target);
+        if (order.gate === "stcpay") {
+          await confirms(order);
+        }
       } catch (e) {
         doing = false;
         utils.showError(e);
       }
     });
+  };
+
+  const confirms = async order => {
+    const value = prompt("Please input SMS verfy code from STCPay");
+    if (value) return;
+    try {
+      await utils.stcPayOrderConfirm(order, value);
+    } catch (e) {
+      await confirms(order);
+    }
   };
 
   /** 订单支付完成 */

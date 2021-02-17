@@ -63,7 +63,22 @@ function SDK({ root, userId, clientId, key, secret }, { _, axios }) {
     return generator(opt) === signature;
   };
 
-  return { create, verify, detail };
+  /** stcpay 订单确认 */
+  const stcPayConfirm = async (orderId, ticket, OtpValue) => {
+    const uri = `/orders/${orderId}/complete`;
+
+    const { data } = await axios.put(
+      `${root}${uri}`,
+      { ticket, info: { OtpValue } },
+      {
+        headers: headers(uri, "order.detail")
+      }
+    );
+
+    return data;
+  };
+
+  return { create, verify, detail, stcPayConfirm };
 }
 
 module.exports = SDK;
