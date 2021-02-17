@@ -152,6 +152,7 @@ server.post("/orders", async (req, res) => {
       name: order.name,
       amount: order.amount,
       currency: order.currency,
+      mobile: order.mobile,
       notificationURL: `${cnf.site}/api_v1/orders/${order.id}/notification`
     });
 
@@ -159,10 +160,13 @@ server.post("/orders", async (req, res) => {
     order.gateTicket = ticket;
     order.status = "active";
 
+    console.log("9999");
     orders.push(order);
     orderDict[order.id] = order;
     updateOrders();
+    console.log("aaaa");
     res.send(201, order);
+    console.log("bbbb");
   }
 });
 

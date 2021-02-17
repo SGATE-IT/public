@@ -37,8 +37,7 @@ function SDK({ root, userId, clientId, key, secret }, { _, axios }) {
     const uri = `/users/${userId}/orders`;
 
     params.clientId = clientId;
-    const url = `${root}/${uri}`;
-    const { data } = await axios.post(url, params, {
+    const { data } = await axios.post(`${root}${uri}`, params, {
       headers: headers(uri, "user.addOrder")
     });
 

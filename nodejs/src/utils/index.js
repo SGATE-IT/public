@@ -84,7 +84,7 @@ function Utils(cnf, { location, $root, $error, $success }) {
   };
 
   // 创建一个订单
-  const addOrder = async (name, amount, currency) => {
+  const addOrder = async (name, amount, currency, mobile, gate) => {
     const res = await fetch(`${API_ROOT}/orders`, {
       method: "POST",
       headers: {
@@ -93,7 +93,9 @@ function Utils(cnf, { location, $root, $error, $success }) {
       body: JSON.stringify({
         name,
         amount,
-        currency
+        currency,
+        gate,
+        mobile
       })
     });
 
