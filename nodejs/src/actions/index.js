@@ -52,6 +52,7 @@ function Actions(cnf, deps) {
         const [order, target] = await addOrder();
         doing = false;
         utils.showSuccess(`创建订单成功: ${order.id}`, target);
+        await utils.sleep(20);
         if (order.gate === "stcpay") {
           await confirms(order);
         }
@@ -64,10 +65,17 @@ function Actions(cnf, deps) {
 
   const confirms = async order => {
     const value = prompt("Please input SMS verfy code from STCPay");
-    if (value) return;
+    if (!value) {
+      utils.showError("Cancel payment confirm");
+      return;
+    }
     try {
       await utils.stcPayOrderConfirm(order, value);
+      utils.showSuccess(order);
+      await utils.sleep(20);
     } catch (e) {
+      utils.showError(e);
+      await utils.sleep(20);
       await confirms(order);
     }
   };

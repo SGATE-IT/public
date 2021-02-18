@@ -71,7 +71,7 @@ function SDK({ root, userId, clientId, key, secret }, { _, axios }) {
       `${root}${uri}`,
       { ticket, info: { OtpValue } },
       {
-        headers: headers(uri, "order.detail")
+        headers: headers(uri, "order.complete")
       }
     );
 

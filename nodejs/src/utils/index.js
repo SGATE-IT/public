@@ -147,9 +147,15 @@ function Utils(cnf, { location, $root, $error, $success }) {
       location.href = url;
     } else {
       $root.setAttribute("class", "success");
-      $success.innerHTML = `Payment succeed: ${order.id}`;
+      if (typeof order === "string") {
+        $success.innerHTML = order;
+      } else {
+        $success.innerHTML = `Payment succeed: ${order.id}`;
+      }
     }
   };
+
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   return Object.freeze({
     params,
@@ -162,7 +168,8 @@ function Utils(cnf, { location, $root, $error, $success }) {
     stcPayOrderConfirm,
     showError,
     showSuccess,
-    getLocationFile
+    getLocationFile,
+    sleep
   });
 }
 

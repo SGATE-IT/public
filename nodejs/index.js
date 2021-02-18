@@ -108,7 +108,8 @@ server.put("/orders/:gateOrderId/remind", async (req, res) => {
 
 // STCPay 支付确认
 server.put("/orders/:gateOrderId/stcpay/status/paid", async (req, res) => {
-  const { gateOrderId, value } = req.params;
+  const { gateOrderId } = req.params;
+  const { value } = req.body;
 
   const order = orders.find(x => x.gateOrderId === gateOrderId);
   if (order) {
