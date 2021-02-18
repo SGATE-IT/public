@@ -3,6 +3,7 @@ const utils = require("./utils")(cnf, {
   document: window.document,
   location: window.location,
   $root: document.getElementById("root"),
+  $loading: document.getElementById("loading"),
   $error: document.getElementById("error"),
   $success: document.getElementById("success")
 });

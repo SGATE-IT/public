@@ -1,7 +1,7 @@
 const ec = encodeURIComponent;
 const dc = decodeURIComponent;
 
-function Utils(cnf, { location, $root, $error, $success }) {
+function Utils(cnf, { location, $root, $error, $success, $loading }) {
   const { mode, api: API_ROOT } = cnf;
   /** 解析 queryString 为 hash object, 简易版本的 queryString.parse */
   const params = queryString => {
@@ -74,17 +74,20 @@ function Utils(cnf, { location, $root, $error, $success }) {
 
   // 提醒服务器去验证订单是否已支付
   const orderRemind = async orderId => {
+    showLoading("Order remind verify");
     const res = await fetch(`${API_ROOT}/orders/${orderId}/remind`, {
       method: "PUT"
     });
 
     if (res.status !== 200) throw await res.json();
 
+    hideLoading();
     return res.json();
   };
 
   // 创建一个订单
   const addOrder = async (name, amount, currency, mobile, gate) => {
+    showLoading("Create payment order");
     const res = await fetch(`${API_ROOT}/orders`, {
       method: "POST",
       headers: {
@@ -101,11 +104,13 @@ function Utils(cnf, { location, $root, $error, $success }) {
 
     if (res.status !== 201) throw await res.json();
 
+    hideLoading();
     return res.json();
   };
 
   // STCPay 订单确认支付
   const stcPayOrderConfirm = async (order, value) => {
+    showLoading("STC pay confirm");
     const res = await fetch(
       `${API_ROOT}/orders/${order.gateOrderId}/stcpay/status/paid`,
       {
@@ -121,16 +126,29 @@ function Utils(cnf, { location, $root, $error, $success }) {
 
     if (res.status !== 200) throw await res.json();
 
+    hideLoading();
     return res.json();
   };
 
   // 获取订单详情
   const orders = async () => {
+    showLoading("List orders");
     const res = await fetch(`${API_ROOT}/orders`);
 
     if (res.status !== 200) throw await res.json();
 
+    hideLoading();
     return res.json();
+  };
+
+  const showLoading = msg => {
+    if (mode === "debugger") console.log("showLoading: %o", msg);
+    $root.setAttribute("class", "loading");
+    $loading.innerHTML = `${msg || ""} loading...`;
+  };
+
+  const hideLoading = () => {
+    $root.setAttribute("class", "none");
   };
 
   // 显示错误信息
@@ -168,6 +186,8 @@ function Utils(cnf, { location, $root, $error, $success }) {
     stcPayOrderConfirm,
     showError,
     showSuccess,
+    showLoading,
+    hideLoading,
     getLocationFile,
     sleep
   });
