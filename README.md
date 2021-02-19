@@ -103,6 +103,21 @@
     method: 'user.addOrder' 不同接口这个值不一样，创建订单: user.addOrder, 订单详情: order.detail
   </pre>
 
+## STCPay 支付相关补充文档
+<pre>支付流程(STCPay 支付无须跳转到 club.sgate.sa 支付页面)</pre>
+* 调用接口创建支付订单
+* 通过页面收集用户的支付短信验证码
+* 调用订单完成接口，验证短信验证码
+  * 成功 则支付完成
+  * 失败 提示用户验证码错误
+
+<pre> STCPay 支付用户输入支付短信验证码的必须在 5 分钟之内，超时需要重新创建支付订单</pre>
+
+<pre>STCPay 支付短信验证码确认接口</pre>
+* [PUT/PATCH] /orders/:orderId/complete 对接商户创建订单
+  * 接口请求参数 body schema 定义, 参考 附录3
+  * 接口返回订单详情，参考 附录1
+
 ## 附录1
 * 订单详情 schema 定义
 <pre>
@@ -189,13 +204,19 @@
     "gate": {
       "description": "支付网关选择",
       "type": "string",
-      "enum": ["mastercard"]
+      "enum": ["mastercard", "stcpay"]
     },
     "userOrderId": {
       "description": "商户系统订单ID，商户要保证该值唯一性",
       "type": "string",
       "minLength": 1,
       "maxLength": 60
+    },
+    "mobile": {
+      "description": "stcpay 支付者手机号码",
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 20
     },
     "currency": {
       "description": "订单金额币种",
@@ -215,3 +236,32 @@
 }
 </pre>
 
+## 附录3
+* 订单支付完成验证接口参数
+<pre>
+{
+  "description": "支付页面回调设置订单为已支付",
+  "required": ["orderId", "ticket", "info"],
+  "properties": {
+    "orderId": {
+      "description": "订单ID",
+      "type": "string"
+    },
+    "ticket": {
+      "description": "订单票据",
+      "type": "string"
+    },
+    "info": {
+      "description": "必要的确认信息",
+      "type": "object",
+      "required": ["OtpValue"],
+      "properties": {
+        "OtpValue": {
+          "description": "stcpay 支付验证信息",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+</pre>
