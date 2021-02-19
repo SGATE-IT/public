@@ -51,7 +51,7 @@ function Actions(cnf, deps) {
       try {
         const [order, target] = await addOrder();
         doing = false;
-        utils.showSuccess(`创建订单成功: ${order.id}`, target);
+        utils.showSuccess(`Order created: ${order.id}`, target);
         await utils.sleep(20);
         if (order.gate === "stcpay") {
           await confirms(order);
