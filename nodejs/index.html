@@ -9,6 +9,37 @@
 #root .error,
 #root .success {
   display: none;
+  box-sizing: border-box;
+  margin: 0;
+  color: rgba(0,0,0,.85);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 15px;
+  word-wrap: break-word;
+  border-radius: 2px;
+}
+
+#loading {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+}
+
+#error {
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+}
+
+#success {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
 }
 
 #root.success .success,
