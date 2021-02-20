@@ -88,18 +88,19 @@ function Utils(cnf, { location, $root, $error, $success, $loading }) {
   // 创建一个订单
   const addOrder = async (name, amount, currency, mobile, gate) => {
     showLoading("Create payment order");
+    const body = {
+      name,
+      amount,
+      currency,
+      gate
+    };
+    if (gate === "stcpay") body.mobile = mobile;
     const res = await fetch(`${API_ROOT}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        name,
-        amount,
-        currency,
-        gate,
-        mobile
-      })
+      body: JSON.stringify(body)
     });
 
     if (res.status !== 201) throw await res.json();
