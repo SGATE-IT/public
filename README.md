@@ -42,6 +42,7 @@
 
 <pre>对接商家需要提供一个接受订单状态变更api</pre>
   * 就是 client 以及订单里的 notificationURL 参数指向的地址
+  * queryString 里会增加一个 `_orderId` 的参数，值等于订单的id
   * 支付网关在订单完成支付后会通过该接口通知对接商户
   * 同一个订单在支付完成后立刻会通知对接商户，之后三天内会最多通知100次
   * 直到商户的 notificationURL 接口成功返回 http 状态200 且内容是 `COMPLETED::{order.id}`
