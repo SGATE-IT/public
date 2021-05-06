@@ -267,3 +267,14 @@
   }
 }
 </pre>
+
+## 常见问题 Q&A
+* Q: 服务器请求平台接口报证书错误 Unable to verify the first certificate
+<pre>
+A: 客户端需要下载证书并在请求的时候指定证书
+
+curl --output intermediate.crt http://crt.sectigo.com/SectigoRSADomainValidationSecureServerCA.crt
+openssl x509 -inform DER -in intermediate.crt -out intermediate.pem -text
+
+执行这两条命令，之后会生成一个 intermediate.pem 文件，请求的时候指定一下这个证书文件就可以了。
+</pre>
