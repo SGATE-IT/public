@@ -19,7 +19,7 @@ const updateOrders = () => {
   fs.writeFileSync(`${__dirname}/orders.json`, JSON.stringify(orders, null, 2));
 };
 
-const axiosError = e => {
+const axiosError = (e) => {
   if (!e.response) return ["no-response", e.message];
   const r = e.response;
   if (!r.data) return [r.status, r.statusText];
@@ -28,36 +28,22 @@ const axiosError = e => {
   return [d.code || r.status, d.message || d, JSON.stringify(d.data)];
 };
 
-axios.post = logger.logger(
-  axios.post,
-  "axios.post",
-  true,
-  res => res.data,
-  axiosError
-);
-axios.get = logger.logger(
-  axios.get,
-  "axios.get",
-  true,
-  res => res.data,
-  axiosError
-);
+axios.post = logger.logger(axios.post, "axios.post", true, (res) => res.data, axiosError);
+axios.get = logger.logger(axios.get, "axios.get", true, (res) => res.data, axiosError);
 
 const orderDict = {};
 for (const x of orders) orderDict[x.id] = x;
 
 const genOrderId = () => {
   const main = new Date().toISOString().replace(/[^\d+]/g, "");
-  const rand = Math.random()
-    .toString()
-    .slice(2, 10);
+  const rand = Math.random().toString().slice(2, 10);
 
   return `${main}${rand}`;
 };
 
 const server = restify.createServer({
   name: "openPay-case-node.js",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 server.use(restify.plugins.acceptParser(server.acceptable));
@@ -65,7 +51,7 @@ server.use(restify.plugins.queryParser());
 server.use(
   restify.plugins.bodyParser({
     uploadDir: os.tmpdir(),
-    multiples: false
+    multiples: false,
   })
 );
 
@@ -92,7 +78,7 @@ server.get("/orders", (req, res, next) => {
 server.put("/orders/:gateOrderId/remind", async (req, res) => {
   const { gateOrderId } = req.params;
 
-  const order = orders.find(x => x.gateOrderId === gateOrderId);
+  const order = orders.find((x) => x.gateOrderId === gateOrderId);
   if (order) {
     const { status } = await sdk.detail(order.gateOrderId);
     if (status === "paid") {
@@ -111,13 +97,9 @@ server.put("/orders/:gateOrderId/stcpay/status/paid", async (req, res) => {
   const { gateOrderId } = req.params;
   const { value } = req.body;
 
-  const order = orders.find(x => x.gateOrderId === gateOrderId);
+  const order = orders.find((x) => x.gateOrderId === gateOrderId);
   if (order) {
-    const { status } = await sdk.stcPayConfirm(
-      order.gateOrderId,
-      order.gateTicket,
-      value
-    );
+    const { status } = await sdk.stcPayConfirm(order.gateOrderId, order.gateTicket, value);
     if (status === "paid") {
       order.status = "paid";
       order.updatedAt = Date.now();
@@ -134,12 +116,12 @@ server.get("/orders/:orderId/notification", async (req, res) => {
   const { orderId } = req.params;
 
   const opt = {
-    uri: `/sample/api_v1${req.url}`,
+    uri: `/api_v1${req.url}`,
     key: req.header("x-auth-key"),
     timestamp: req.header("x-auth-timestamp") | 0,
     signMethod: req.header("x-auth-sign-method"),
     signVersion: req.header("x-auth-sign-version"),
-    method: "order.notification"
+    method: "order.notification",
   };
 
   const signature = req.header("x-auth-signature");
@@ -176,7 +158,7 @@ server.post("/orders", async (req, res) => {
       amount: order.amount,
       currency: order.currency,
       mobile: order.mobile,
-      notificationURL: `${cnf.site}/api_v1/orders/${order.id}/notification`
+      notificationURL: `${cnf.site}/api_v1/orders/${order.id}/notification`,
     });
 
     order.gateOrderId = id;

@@ -272,6 +272,7 @@
 * Q: 服务器请求平台接口报证书错误 Unable to verify the first certificate
 <pre>
 A: 客户端需要下载证书并在请求的时候指定证书
+参考文档地址: https://zhuanlan.zhihu.com/p/108958388
 
 curl --output intermediate.crt http://crt.sectigo.com/SectigoRSADomainValidationSecureServerCA.crt
 openssl x509 -inform DER -in intermediate.crt -out intermediate.pem -text
