@@ -1,6 +1,6 @@
 function Actions(cnf, deps) {
   const {
-    payment: { root: PAYMENT_ROOT }
+    payment: { root: PAYMENT_ROOT, wireRoot: PAYMENT_WIRE_TRANSFER_ROOT },
   } = cnf;
   const { utils, document, location } = deps;
 
@@ -11,12 +11,10 @@ function Actions(cnf, deps) {
   const $btn = document.getElementById("paymentBtn");
   const $gates = document.getElementsByName("gate");
 
-  $name.value += Math.random()
-    .toString(36)
-    .slice(2);
+  $name.value += Math.random().toString(36).slice(2);
 
   const getGate = () => {
-    const el = [].find.call($gates, x => x.checked);
+    const el = [].find.call($gates, (x) => x.checked);
     return el && el.value;
   };
 
@@ -36,6 +34,13 @@ function Actions(cnf, deps) {
       adds.orderId = order.gateOrderId;
       adds.ticket = order.gateTicket;
       target = utils.modifiyURL(PAYMENT_ROOT, adds);
+    }
+
+    if (gate === "wireTransfer") {
+      const adds = utils.orderURLs(location, order.id);
+      adds.orderId = order.gateOrderId;
+      adds.ticket = order.gateTicket;
+      target = utils.modifiyURL(PAYMENT_WIRE_TRANSFER_ROOT, adds);
     }
 
     return [order, target];
@@ -63,7 +68,7 @@ function Actions(cnf, deps) {
     });
   };
 
-  const confirms = async order => {
+  const confirms = async (order) => {
     const value = prompt("Please input SMS verfy code from STCPay");
     if (!value) {
       utils.showError("Cancel payment confirm");
@@ -81,7 +86,7 @@ function Actions(cnf, deps) {
   };
 
   /** 订单支付完成 */
-  const complete = async params => {
+  const complete = async (params) => {
     const order = await utils.orderRemind(params.orderId);
     utils.showSuccess(order);
   };
