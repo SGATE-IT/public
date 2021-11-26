@@ -5,6 +5,6 @@ module.exports = Object.freeze({
     // root: "https://club.sgate.sa",
     root: "http://opay.xiongfei.me",
     // wireRoot: "https://club.sgate.sa/wire-transfer",
-    wireRoot: "http://opay.xiongfei.me/wire-transfer",
+    wireRoot: "http://opay.xiongfei.me/wire-transfer/",
   },
 });

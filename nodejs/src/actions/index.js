@@ -101,6 +101,11 @@ function Actions(cnf, deps) {
     utils.showError(Error("Payment cancel"));
   };
 
-  return { Default, complete, error, cancel };
+  /** 显示客服信息 */
+  const contact = async () => {
+    utils.showError(Error("Customer service contact page"));
+  };
+
+  return { Default, complete, error, cancel, contact };
 }
 module.exports = Actions;
