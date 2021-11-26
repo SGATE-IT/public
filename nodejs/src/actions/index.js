@@ -48,25 +48,24 @@ function Actions(cnf, deps) {
 
   let doing = false;
   /** 默认动作，也就是开始订单的动作 */
-  const Default = async () => {
-    $btn.addEventListener("click", async () => {
-      // 避免重复点击
-      if (doing) return;
-      doing = true;
-      try {
-        const [order, target] = await addOrder();
-        doing = false;
-        utils.showSuccess(`Order created: ${order.id}`, target);
-        await utils.sleep(20);
-        if (order.gate === "stcpay") {
-          await confirms(order);
-        }
-      } catch (e) {
-        doing = false;
-        utils.showError(e);
+  $btn.addEventListener("click", async () => {
+    // 避免重复点击
+    if (doing) return;
+    doing = true;
+    try {
+      const [order, target] = await addOrder();
+      doing = false;
+      utils.showSuccess(`Order created: ${order.id}`, target);
+      await utils.sleep(20);
+      if (order.gate === "stcpay") {
+        await confirms(order);
       }
-    });
-  };
+    } catch (e) {
+      doing = false;
+      utils.showError(e);
+    }
+  });
+  const Default = async () => {};
 
   const confirms = async (order) => {
     const value = prompt("Please input SMS verfy code from STCPay");
