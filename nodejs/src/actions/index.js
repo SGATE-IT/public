@@ -1,6 +1,10 @@
 function Actions(cnf, deps) {
   const {
-    payment: { root: PAYMENT_ROOT, wireRoot: PAYMENT_WIRE_TRANSFER_ROOT },
+    payment: {
+      root: PAYMENT_ROOT,
+      wireRoot: PAYMENT_WIRE_TRANSFER_ROOT,
+      hostedRoot: PAYMENT_HOSTED_ROOT,
+    },
   } = cnf;
   const { utils, document, location } = deps;
 
@@ -41,6 +45,13 @@ function Actions(cnf, deps) {
       adds.orderId = order.gateOrderId;
       adds.ticket = order.gateTicket;
       target = utils.modifiyURL(PAYMENT_WIRE_TRANSFER_ROOT, adds);
+    }
+
+    if (gate === "mastercardHosted") {
+      const adds = utils.orderURLs(location, order.id);
+      adds.orderId = order.gateOrderId;
+      adds.ticket = order.gateTicket;
+      target = utils.modifiyURL(PAYMENT_HOSTED_ROOT, adds);
     }
 
     return [order, target];
