@@ -33,13 +33,6 @@
 * `error` 订单失败，具体信息查看订单详情的 message 信息
 
 
-## 支付网关提供的页面
-* https://club.sgate.sa/ 支付页面
-  * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
-  * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
-  * 参数 `method` 选填, 页面方式 可选 `lightbox` or `paymentPage` 分别代表轻量级本页支付弹层以及全新页面支付
-  * 参数 `returnURL` 选填，支付完成后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action, action: `complete` 支付成功，`error` 支付失败，`cancel` 支付取消
-
 <pre>对接商家需要提供一个接受订单状态变更api</pre>
   * 就是 client 以及订单里的 notificationURL 参数指向的地址
   * 支付网关在订单完成支付后会通过该接口通知对接商户
@@ -105,6 +98,13 @@
     method: 'user.addOrder' 不同接口这个值不一样，创建订单: user.addOrder, 订单详情: order.detail
   </pre>
 
+## mastercard 支付相关补充文档
+<pre> 支付流程( mastercard 必须跳转到 https://club.sgate.sa/ 支付页面)</pre>
+  * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
+  * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
+  * 参数 `method` 选填, 页面方式 可选 `lightbox` or `paymentPage` 分别代表轻量级本页支付弹层以及全新页面支付
+  * 参数 `returnURL` 选填，支付完成后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action, action: `complete` 支付成功，`error` 支付失败，`cancel` 支付取消
+
 ## STCPay 支付相关补充文档
 <pre>支付流程(STCPay 支付无须跳转到 club.sgate.sa 支付页面)</pre>
 * 调用接口创建支付订单
@@ -125,7 +125,13 @@
 * https://club.sgate.sa/wire-transfer/ 支付页面
   * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
   * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
-  * 参数 `method` 选填, 页面方式 可选 `lightbox` or `paymentPage` 分别代表轻量级本页支付弹层以及全新页面支付
+  * 参数 `returnURL` 选填，支付完成后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action, action: `complete` 支付成功，`error` 支付失败，`cancel` 支付取消, `contact` 显示商户的客服联系人页面
+
+## mastercard-hosted 支付相关补充文档
+<pre>支付流程(mastercard-hosted 支付必须跳转到 https://club.sgate.sa/mastercard-hosted/ 支付页面)</pre>
+* https://club.sgate.sa/mastercard-hosted/ 支付页面
+  * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
+  * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
   * 参数 `returnURL` 选填，支付完成后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action, action: `complete` 支付成功，`error` 支付失败，`cancel` 支付取消, `contact` 显示商户的客服联系人页面
 
 
