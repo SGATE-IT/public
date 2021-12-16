@@ -127,7 +127,7 @@
   * 参数 `ticket` 必填, 支付网关创建订单返回的 `ticket`
   * 参数 `returnURL` 选填，支付完成后返回页面url, 不传则无法跳回, 返回页面会额外携带三个参数 orderId, ticket, action, action: `complete` 支付成功，`error` 支付失败，`cancel` 支付取消, `contact` 显示商户的客服联系人页面
 
-## mastercard-hosted 支付相关补充文档
+## mastercardHosted 支付相关补充文档
 <pre>支付流程(mastercard-hosted 支付必须跳转到 https://club.sgate.sa/mastercard-hosted/ 支付页面)</pre>
 * https://club.sgate.sa/mastercard-hosted/ 支付页面
   * 参数 `orderId` 必填，支付网关创建订单返回的 `id`
@@ -221,7 +221,7 @@
     "gate": {
       "description": "支付网关选择",
       "type": "string",
-      "enum": ["mastercard", "stcpay"]
+      "enum": ["mastercard", "stcpay", "wireTransfer", "mastercardHosted"]
     },
     "userOrderId": {
       "description": "商户系统订单ID，商户要保证该值唯一性",
