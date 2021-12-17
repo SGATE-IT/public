@@ -14,7 +14,7 @@ function Actions(cnf, deps) {
   const $mobile = document.getElementById("mobile");
   const $btn = document.getElementById("paymentBtn");
   const $gates = document.getElementsByName("gate");
-  const $merchantName = document.getElementsByName("merchantName");
+  const $merchantName = document.getElementById("merchantName");
 
   $name.value += Math.random().toString(36).slice(2);
 
