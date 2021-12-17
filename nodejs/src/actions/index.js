@@ -38,6 +38,10 @@ function Actions(cnf, deps) {
       const adds = utils.orderURLs(location, order.id);
       adds.orderId = order.gateOrderId;
       adds.ticket = order.gateTicket;
+      if ($merchantName) {
+        const merchantName = $merchantName.value.trim();
+        if (merchantName) adds.merchantName = merchantName;
+      }
       target = utils.modifiyURL(PAYMENT_ROOT, adds);
     }
 
@@ -45,10 +49,6 @@ function Actions(cnf, deps) {
       const adds = utils.orderURLs(location, order.id);
       adds.orderId = order.gateOrderId;
       adds.ticket = order.gateTicket;
-      if ($merchantName) {
-        const merchantName = $merchantName.value.trim();
-        if (merchantName) adds.merchantName = merchantName;
-      }
       target = utils.modifiyURL(PAYMENT_WIRE_TRANSFER_ROOT, adds);
     }
 
