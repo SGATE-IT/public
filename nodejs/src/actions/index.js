@@ -14,6 +14,7 @@ function Actions(cnf, deps) {
   const $mobile = document.getElementById("mobile");
   const $btn = document.getElementById("paymentBtn");
   const $gates = document.getElementsByName("gate");
+  const $merchantName = document.getElementsByName("merchantName");
 
   $name.value += Math.random().toString(36).slice(2);
 
@@ -44,6 +45,10 @@ function Actions(cnf, deps) {
       const adds = utils.orderURLs(location, order.id);
       adds.orderId = order.gateOrderId;
       adds.ticket = order.gateTicket;
+      if ($merchantName) {
+        const merchantName = $merchantName.value.trim();
+        if (merchantName) adds.merchantName = merchantName;
+      }
       target = utils.modifiyURL(PAYMENT_WIRE_TRANSFER_ROOT, adds);
     }
 
